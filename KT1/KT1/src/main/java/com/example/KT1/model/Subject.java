@@ -22,12 +22,22 @@ public class Subject {
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
     private Long id;
-    private PublicKey publicKey;
-    private X500Name x500name;
-    private String serialNumber;
-    private Date startDate;
-    private Date endDate;
+    private String name;
+    private String surname;
+    private String email;
+    private String organisation;
+    private String organisationUnit;
     private boolean isCA;
     private boolean certificate;
 
+
+    public Subject(Issuer issuer) {
+        name = issuer.getName();
+        surname = issuer.getSurname();
+        email = issuer.getEmail();
+        organisation = issuer.getOrganisation();
+        organisationUnit = issuer.getOrganisationUnit();
+        isCA = true;
+        certificate = true;
+    }
 }

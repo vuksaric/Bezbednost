@@ -14,13 +14,18 @@ import java.security.PrivateKey;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Admin {
+public class Issuer {
 
     @Id
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
     private Long id;
-    private PrivateKey privateKey;
-    private X500Name x500name;
+    private String name;
+    private String surname;
+    private String email;
+    private String organisation;
+    private String organisationUnit;
+
+
 
 }

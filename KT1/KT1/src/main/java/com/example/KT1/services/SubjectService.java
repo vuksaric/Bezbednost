@@ -15,30 +15,11 @@ public class SubjectService {
     @Autowired
     SubjectRepository subjectRepository;
 
+
     public Subject findOne(long idI) {
         return subjectRepository.findById(idI).orElseGet(null);
     }
 
-    public void createCertificate(String type, String days, String subjectId, String issuerId){
-        long idI = Long.parseLong(issuerId);
-        long idS = Long.parseLong(subjectId);
-        int numDays = Integer.parseInt(days);
-        Subject subject = findOne((idS));
-        if( type.equalsIgnoreCase("root")){
-            Subject issuer = subject;
-            subject.setCA(true);
-        }
-        else{
-            Subject issuer = findOne(idI);
-            if (type.equalsIgnoreCase("intermediate"))
-                subject.setCA(true);
-        }
 
-        subject.setCertificate(true);
-        subjectRepository.save(subject);
-        KeyStoreWriter ks=new KeyStoreWriter();
-        KeyPair keyPar = ks.generateKeyPair();
-        char[] array = "tim17".toCharArray();
-        CertificateGenerator certgen= new CertificateGenerator();
-    }
+    public void save(Subject subject) { subjectRepository.save(subject); }
 }
