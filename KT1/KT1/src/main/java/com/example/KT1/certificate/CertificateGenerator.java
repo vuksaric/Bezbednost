@@ -214,7 +214,8 @@ public class CertificateGenerator {
         boolean crl = extensionDTO.getKeyAgreement() == true ? true : false;
 
         int sum = 0;
-        sum += 4;
+        if(subject.isCA())
+            sum += 4;
         if (dig)
             sum += 128;
         if (non)

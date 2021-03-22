@@ -27,7 +27,7 @@ public class Subject {
     private String email;
     private String organisation;
     private String organisationUnit;
-    private boolean isCA;
+    private boolean isCA = false;
     private boolean certificate;
 
 
