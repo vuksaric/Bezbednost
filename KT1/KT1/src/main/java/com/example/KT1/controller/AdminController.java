@@ -2,6 +2,7 @@ package com.example.KT1.controller;
 
 import com.example.KT1.dto.CertificateDTO;
 import com.example.KT1.dto.ExtensionDTO;
+import com.example.KT1.model.Issuer;
 import com.example.KT1.model.Subject;
 import com.example.KT1.services.AdminService;
 import com.example.KT1.services.SubjectService;
@@ -38,5 +39,10 @@ public class AdminController {
     @GetMapping(value = "/allCertificates")
     public ResponseEntity<List<CertificateDTO>> getAllCertificates() throws CertificateEncodingException {
         return (ResponseEntity<List<CertificateDTO>>) adminServices.getAllCertificates();
+    }
+
+    @GetMapping(value = "/getAllIssuer")
+    public ResponseEntity<List<Issuer>> getAllIssuers(){
+        return (ResponseEntity<List<Issuer>>) adminServices.getAll();
     }
 }

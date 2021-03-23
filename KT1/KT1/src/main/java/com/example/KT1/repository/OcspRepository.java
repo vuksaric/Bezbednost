@@ -11,7 +11,7 @@ import java.util.List;
 public interface OcspRepository extends JpaRepository<OCSP, Long> {
     OCSP findOneById(long id);
 
-    List<OCSP> findAllByAdminId(long id);
+    //List<OCSP> findAllByAdminId(long id);
 
     OCSP findOneBySerialNumber(BigInteger serialNumber);
 }

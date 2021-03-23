@@ -12,10 +12,8 @@ import com.example.KT1.repository.AdminRepository;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
@@ -137,5 +135,9 @@ public class AdminService {
             }
         }
         return certificateDTOS;
+    }
+
+    public List<Issuer> getAll() {
+        return adminRepository.findAll();
     }
 }
