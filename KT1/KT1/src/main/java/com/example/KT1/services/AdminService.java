@@ -139,13 +139,14 @@ public class AdminService {
 
         List<Subject> subjectList = subjectService.findAll();
         for(Subject subject: subjectList){
-            if(subject.isCA() && !subject.getOrganisationUnit().equalsIgnoreCase("admin")){
-                kw.loadKeyStore("interCertificate.jks",array);
-                certificateDTOS.add(new CertificateDTO((X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", subject.getId().toString())));
-            }
-            else if(!subject.isCA()){
-                kw.loadKeyStore("endEntity.jks",array);
-                certificateDTOS.add(new CertificateDTO((X509Certificate) kr.readCertificate("endEntity.jks", "tim17", subject.getId().toString())));
+            if(subject.isCertificate()) {
+                if (subject.isCA() && !subject.getOrganisationUnit().equalsIgnoreCase("admin")) {
+                    kw.loadKeyStore("interCertificate.jks", array);
+                    certificateDTOS.add(new CertificateDTO((X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", subject.getId().toString())));
+                } else if (!subject.isCA()) {
+                    kw.loadKeyStore("endEntity.jks", array);
+                    certificateDTOS.add(new CertificateDTO((X509Certificate) kr.readCertificate("endEntity.jks", "tim17", subject.getId().toString())));
+                }
             }
         }
         return certificateDTOS;

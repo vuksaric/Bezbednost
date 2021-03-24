@@ -1,11 +1,13 @@
 package com.example.KT1.controller;
 
 import com.example.KT1.dto.ExtensionDTO;
+import com.example.KT1.dto.IdDTO;
 import com.example.KT1.keyStore.KeyStoreReader;
 import com.example.KT1.keyStore.KeyStoreWriter;
 import com.example.KT1.model.Subject;
 import com.example.KT1.services.OcspService;
 import com.example.KT1.services.SubjectService;
+import org.bouncycastle.cert.ocsp.Req;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,7 +34,7 @@ public class OcspController {
     @Autowired
     SubjectService subjectService;
 
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value="/checkValidity/{id}")
     public boolean checkWithdrawal(@PathVariable String id) throws CertificateEncodingException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
         long num = Long.parseLong(id);
@@ -53,10 +55,11 @@ public class OcspController {
         }
     }
 
-    @PostMapping(value="/revoke/{id}")
-    public void revokeCert(@PathVariable String id) throws CertificateException, OperatorCreationException, IOException, ParseException {
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping(value="/revoke")
+    public void revokeCert(@RequestBody IdDTO idDto) throws CertificateException, OperatorCreationException, IOException, ParseException {
 
-        long num = Long.parseLong(id);
+        long num = Long.parseLong(idDto.getId());
         Subject subject = subjectService.findOne((num));
         KeyStoreWriter kw = new KeyStoreWriter();
         char[] array = "tim17".toCharArray();
@@ -64,11 +67,11 @@ public class OcspController {
 
         if(subject.isCA()==true){
             kw.loadKeyStore("interCertificate.jks",array);
-            X509Certificate cert = (X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", id);
+            X509Certificate cert = (X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", idDto.getId());
             ocspService.revokeCertificate(cert);
         }else{
             kw.loadKeyStore("endEntity.jks",array);
-            X509Certificate cert = (X509Certificate) kr.readCertificate("endEntity.jks", "tim17", id);
+            X509Certificate cert = (X509Certificate) kr.readCertificate("endEntity.jks", "tim17", idDto.getId());
             ocspService.revokeCertificate(cert);
         }
     };

@@ -29,6 +29,7 @@ public class AdminController {
     @Autowired
     SubjectService subjectService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value="/addCertificate/{type}/{days}/{subjectId}/{issuerId}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createCertificate(@PathVariable String type, @PathVariable String days, @PathVariable String subjectId, @PathVariable String issuerId, @RequestBody ExtensionDTO extensionDTO) throws CertificateException, OperatorCreationException, IOException {
 
@@ -37,7 +38,7 @@ public class AdminController {
         adminServices.createCertificate(type, days, subjectId, issuerId, extensionDTO);
     }
 
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/allCertificates")
     public List<CertificateDTO> getAllCertificates() throws CertificateEncodingException {
         return adminServices.getAllCertificates();
