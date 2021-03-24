@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.KeyPair;
+import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
@@ -41,6 +42,8 @@ public class AdminService {
     public void createCertificate(String type, String days, String subjectId, String issuerId, ExtensionDTO extensionDTO) throws OperatorCreationException, CertIOException, CertificateException {
         long idI = Long.parseLong(issuerId);
         long idS = Long.parseLong(subjectId);
+        System.out.println(idI);
+        System.out.println(idS);
         int numDays = Integer.parseInt(days);
         Issuer issuer = null;
         Subject subject;
@@ -48,6 +51,8 @@ public class AdminService {
         if( type.equalsIgnoreCase("root")){
             issuer = findOne(idI);
             subject = new Subject(issuer);
+            System.out.println(issuer.getId());
+            System.out.println(subject.getId());
         }
         else if( type.equalsIgnoreCase("interRoot")){
             issuer = findOne(idI);
@@ -56,12 +61,14 @@ public class AdminService {
         }
         else{
             issuer2 = subjectService.findOne(idI);
-            subject = subjectService.findOne((idS));
+            subject = subjectService.findOne(idS);
             if (!type.equalsIgnoreCase("endEntity"))
                 subject.setCA(true);
         }
 
         subject.setCertificate(true);
+        /*if(!type.equalsIgnoreCase("root"))
+            subjectService.delete(subject);*/
         subjectService.save(subject);
         KeyStoreWriter kw=new KeyStoreWriter();
         KeyPair keyPair = kw.generateKeyPair();
@@ -70,6 +77,7 @@ public class AdminService {
         Certificate certificate;
         if( type.equalsIgnoreCase("root")){
             certificate = certgen.generateCertRoot(subject,issuer,keyPair,"SHA256WithRSAEncryption",numDays,extensionDTO);
+            System.out.println(certificate);
         }
         else if(type.equalsIgnoreCase("interRoot")){
             certificate = certgen.generateCertFromRoot(subject,issuer,keyPair,"SHA256WithRSAEncryption",numDays,extensionDTO);
@@ -81,25 +89,31 @@ public class AdminService {
         KeyStoreReader kr = new KeyStoreReader();
         X509Certificate cert;
         if(type.equalsIgnoreCase("root")){
+            System.out.println("SUBJECT: " + subject.getId() + " " + subject.getName());
+            System.out.println("ISSUER: " + issuer.getId() + " " + issuer.getName());
             kw.loadKeyStore("root.jks",array);
-            kw.write(subject.getId().toString(), keyPair.getPrivate() ,  subject.getId().toString().toCharArray(), certificate);
+            //System.out.println(keyPair.getPrivate().toString() + " " + subject.getId().toString() );
+            // alijas, pk, password, cert
+            kw.write(issuer.getId().toString(), keyPair.getPrivate() ,  issuer.getId().toString().toCharArray(), certificate);
             kw.saveKeyStore("root.jks", array);
-            cert = (X509Certificate) kr.readCertificate("root.jks", "tim17", subjectId);
-            System.out.println(cert);
+            cert = (X509Certificate) kr.readCertificate("root.jks", "tim17", issuer.getId().toString());
+            PrivateKey pk = kr.readPrivateKey("root.jks", "tim17", issuer.getId().toString(), issuer.getId().toString());
+            //System.out.println(cert);
+            System.out.println("PRIVATAN KLJUC: " + pk + " " + keyPair.getPrivate().toString());
         }
         else if(type.equalsIgnoreCase("endEntity")){
             kw.loadKeyStore("endEntity.jks",array);
             kw.write(subject.getId().toString(), keyPair.getPrivate() ,  subject.getId().toString().toCharArray(), certificate);
             kw.saveKeyStore("endEntity.jks", array);
-            cert = (X509Certificate) kr.readCertificate("endEntity.jks", "tim17", subjectId);
-            System.out.println(cert);
+            cert = (X509Certificate) kr.readCertificate("endEntity.jks", "tim17", subject.getId().toString());
+            //System.out.println(cert);
         }
         else{
             kw.loadKeyStore("interCertificate.jks",array);
             kw.write(subject.getId().toString(), keyPair.getPrivate() ,  subject.getId().toString().toCharArray(), certificate);
             kw.saveKeyStore("interCertificate.jks", array);
-            cert = (X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", subjectId);
-            System.out.println(cert);
+            cert = (X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", subject.getId().toString());
+            //System.out.println(cert);
         }
 
         if(!type.equalsIgnoreCase("root")){
@@ -117,19 +131,19 @@ public class AdminService {
         KeyStoreReader kr = new KeyStoreReader();
         KeyStoreWriter kw=new KeyStoreWriter();
         char[] array = "tim17".toCharArray();
-        kw.loadKeyStore("root.jks",array);
         Certificate cert;
         for(Issuer issuer: issuerList){
-            certificateDTOS.add(new CertificateDTO((X509Certificate) kr.readCertificate("endEntity.jks", "tim17", issuer.getId().toString())));
+            kw.loadKeyStore("root.jks",array);
+            certificateDTOS.add(new CertificateDTO((X509Certificate) kr.readCertificate("root.jks", "tim17", issuer.getId().toString())));
         }
 
         List<Subject> subjectList = subjectService.findAll();
         for(Subject subject: subjectList){
-            if(subject.isCA()){
+            if(subject.isCA() && !subject.getOrganisationUnit().equalsIgnoreCase("admin")){
                 kw.loadKeyStore("interCertificate.jks",array);
                 certificateDTOS.add(new CertificateDTO((X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", subject.getId().toString())));
             }
-            else{
+            else if(!subject.isCA()){
                 kw.loadKeyStore("endEntity.jks",array);
                 certificateDTOS.add(new CertificateDTO((X509Certificate) kr.readCertificate("endEntity.jks", "tim17", subject.getId().toString())));
             }

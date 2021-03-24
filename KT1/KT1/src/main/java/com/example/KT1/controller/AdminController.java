@@ -32,17 +32,19 @@ public class AdminController {
     @PostMapping(value="/addCertificate/{type}/{days}/{subjectId}/{issuerId}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createCertificate(@PathVariable String type, @PathVariable String days, @PathVariable String subjectId, @PathVariable String issuerId, @RequestBody ExtensionDTO extensionDTO) throws CertificateException, OperatorCreationException, IOException {
 
+        System.out.println(subjectId);
+        System.out.println(issuerId);
         adminServices.createCertificate(type, days, subjectId, issuerId, extensionDTO);
     }
 
 
     @GetMapping(value = "/allCertificates")
-    public ResponseEntity<List<CertificateDTO>> getAllCertificates() throws CertificateEncodingException {
-        return (ResponseEntity<List<CertificateDTO>>) adminServices.getAllCertificates();
+    public List<CertificateDTO> getAllCertificates() throws CertificateEncodingException {
+        return adminServices.getAllCertificates();
     }
 
     @GetMapping(value = "/getAllIssuer")
-    public ResponseEntity<List<Issuer>> getAllIssuers(){
-        return (ResponseEntity<List<Issuer>>) adminServices.getAll();
+    public List<Issuer> getAllIssuers(){
+        return adminServices.getAll();
     }
 }

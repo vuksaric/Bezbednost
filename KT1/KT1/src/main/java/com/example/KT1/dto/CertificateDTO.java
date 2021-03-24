@@ -1,6 +1,7 @@
 package com.example.KT1.dto;
 
 import com.example.KT1.model.Issuer;
+import lombok.*;
 import org.bouncycastle.asn1.x500.RDN;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
@@ -12,6 +13,11 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CertificateDTO {
 
     private String subject;

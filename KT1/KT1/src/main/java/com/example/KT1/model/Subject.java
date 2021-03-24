@@ -36,7 +36,7 @@ public class Subject {
         surname = issuer.getSurname();
         email = issuer.getEmail();
         organisation = issuer.getOrganisation();
-        organisationUnit = issuer.getOrganisationUnit();
+        organisationUnit = "admin";
         isCA = true;
         certificate = true;
     }

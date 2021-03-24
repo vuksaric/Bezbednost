@@ -46,8 +46,8 @@ public class OcspController {
             Boolean validan = ocspService.checkParents(cert);
             return validan;
         }else{
-            kw.loadKeyStore("endCertificate.jks",array);
-            X509Certificate cert = (X509Certificate) kr.readCertificate("endCertificate.jks", "tim17", id);
+            kw.loadKeyStore("endEntity.jks",array);
+            X509Certificate cert = (X509Certificate) kr.readCertificate("endEntity.jks", "tim17", id);
             Boolean validan = ocspService.checkParents(cert);
             return validan;
         }

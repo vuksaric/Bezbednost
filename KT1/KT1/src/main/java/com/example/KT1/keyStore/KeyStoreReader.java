@@ -9,6 +9,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
 public class KeyStoreReader {
+
     private KeyStore keyStore;
 
     public KeyStoreReader() {
@@ -51,14 +52,21 @@ public class KeyStoreReader {
 
     public PrivateKey readPrivateKey(String keyStoreFile, String keyStorePass, String alias, String pass) {
         try {
+            System.out.println("READ: " + alias + " " + pass);
             //kreiramo instancu KeyStore
             KeyStore ks = KeyStore.getInstance("JKS", "SUN");
             //ucitavamo podatke
             BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
+            if(in == null){
+                System.out.println("IN JE OUT");
+            }
             ks.load(in, keyStorePass.toCharArray());
 
             if(ks.isKeyEntry(alias)) {
+                // ne udje ovde
+                System.out.println("ALIAS" + alias);
                 PrivateKey pk = (PrivateKey) ks.getKey(alias, pass.toCharArray());
+                System.out.println("KLJUC" + pk.toString());
                 return pk;
             }
         } catch (KeyStoreException e) {

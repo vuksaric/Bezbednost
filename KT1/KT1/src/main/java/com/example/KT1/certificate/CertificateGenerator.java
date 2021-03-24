@@ -47,7 +47,7 @@ public class CertificateGenerator {
         nameBuilder.addRDN(BCStyle.O, subject.getOrganisation());
         nameBuilder.addRDN(BCStyle.OU, subject.getOrganisationUnit());
         nameBuilder.addRDN(BCStyle.E, subject.getEmail());
-        nameBuilder.addRDN(BCStyle.UID, subject.getId().toString());
+        nameBuilder.addRDN(BCStyle.UID, issuer.getId().toString());
 
         final Instant now = Instant.now();
         final Date startDate = Date.from(now);
@@ -55,6 +55,7 @@ public class CertificateGenerator {
 
 
         PrivateKey pk = keyPair.getPrivate();
+        System.out.println("KLJUCEVI" + keyPair.getPublic().toString() + " " + keyPair.getPrivate().toString());
         final ContentSigner contentSigner = new JcaContentSignerBuilder(hashAlgorithm).build(pk);
 
         Boolean isCa = subject.isCA();
@@ -120,10 +121,10 @@ public class CertificateGenerator {
         KeyStoreWriter kw = new KeyStoreWriter();
         char[] array = "tim17".toCharArray();
         KeyStoreReader kr = new KeyStoreReader();
-        kw.loadKeyStore("rootCertificate.jks", array);
-        PrivateKey pk = kr.readPrivateKey("rootCertificate.jks", "tim17", issuer.getId().toString(), issuer.getId().toString());
+        kw.loadKeyStore("root.jks", array);
+        PrivateKey pk = kr.readPrivateKey("root.jks", "tim17", issuer.getId().toString(), issuer.getId().toString());
         // alijas - pokazuje na sertifikat, password - otkljucava sertifikat sa odg alijasom, keyStorePass - otkljucava keyStore
-        System.out.println(pk);
+        //System.out.println(pk);
         final ContentSigner contentSigner = new JcaContentSignerBuilder(hashAlgorithm).build(pk);
 
         Boolean isCa = subject.isCA();
@@ -153,7 +154,7 @@ public class CertificateGenerator {
 
         KeyUsage keyUsage = new KeyUsage(sum);
 
-        X509Certificate certRoot = (X509Certificate) kr.readCertificate("rootCertificate.jks", "tim17", issuer.getId().toString());
+        X509Certificate certRoot = (X509Certificate) kr.readCertificate("root.jks", "tim17", issuer.getId().toString());
         Date certRDate = certRoot.getNotAfter();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -182,7 +183,7 @@ public class CertificateGenerator {
 
     public java.security.cert.Certificate generateCertFromInter(Subject subject, Subject issuer, KeyPair keyPair, String hashAlgorithm, int numDays, ExtensionDTO extensionDTO) throws OperatorCreationException, CertIOException, CertificateException {
         X500NameBuilder nameBuilder = new X500NameBuilder(BCStyle.INSTANCE);
-        nameBuilder.addRDN(BCStyle.CN, subject.getName() + subject.getSurname());
+        nameBuilder.addRDN(BCStyle.CN, subject.getName() + " " + subject.getSurname());
         nameBuilder.addRDN(BCStyle.SURNAME, subject.getSurname());
         nameBuilder.addRDN(BCStyle.GIVENNAME, subject.getName());
         nameBuilder.addRDN(BCStyle.O, subject.getOrganisation());
@@ -197,8 +198,8 @@ public class CertificateGenerator {
         KeyStoreWriter kw = new KeyStoreWriter();
         char[] array = "tim17".toCharArray();
         KeyStoreReader kr = new KeyStoreReader();
-        kw.loadKeyStore("intermediateCertificate.jks", array);
-        PrivateKey pk = kr.readPrivateKey("intermediateCertificate.jks", "tim17", issuer.getId().toString(), issuer.getId().toString());
+        kw.loadKeyStore("interCertificate.jks", array);
+        PrivateKey pk = kr.readPrivateKey("interCertificate.jks", "tim17", issuer.getId().toString(), issuer.getId().toString());
         // alijas - pokazuje na sertifikat, password - otkljucava sertifikat sa odg alijasom, keyStorePass - otkljucava keyStore
         System.out.println(pk);
         final ContentSigner contentSigner = new JcaContentSignerBuilder(hashAlgorithm).build(pk);
@@ -231,7 +232,7 @@ public class CertificateGenerator {
 
         KeyUsage keyUsage = new KeyUsage(sum);
 
-        X509Certificate certRoot = (X509Certificate) kr.readCertificate("rootCertificate.jks", "tim17", issuer.getId().toString());
+        X509Certificate certRoot = (X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", issuer.getId().toString());
         Date certRDate = certRoot.getNotAfter();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

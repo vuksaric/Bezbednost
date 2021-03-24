@@ -57,8 +57,9 @@ public class KeyStoreWriter {
         }
     }
 
-    public void write(String alias, PrivateKey privateKey, char[] password, java.security.cert.Certificate certificate) {
+    public void write(String alias, PrivateKey privateKey, char[] password, Certificate certificate) {
         try {
+            System.out.println("WRITE: " + alias + " " + privateKey.toString() + " " + password.toString());
             keyStore.setKeyEntry(alias, privateKey, password, new Certificate[] {certificate});
         } catch (KeyStoreException e) {
             e.printStackTrace();

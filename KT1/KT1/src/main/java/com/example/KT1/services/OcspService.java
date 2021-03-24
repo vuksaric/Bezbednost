@@ -25,6 +25,8 @@ public class OcspService {
     @Autowired
     private OcspRepository ocspRepository;
 
+    @Autowired SubjectService subjectService;
+
     public void save(OCSP ocsp) {
         ocspRepository.save(ocsp);
     }
@@ -52,7 +54,8 @@ public class OcspService {
         kw.loadKeyStore("interCertificate.jks",array);
         KeyStoreReader kr = new KeyStoreReader();
         parent = (X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", alias);
-
+        RDN ou = x500name.getRDNs(BCStyle.OU)[0];
+        String organisationUnit = IETFUtils.valueToString(ou.getFirst().getValue());
 
         boolean validity;
         boolean validityDate;
@@ -62,7 +65,7 @@ public class OcspService {
         boolean checkRoot = false;
         boolean root = false;
 
-        if(parent == null){
+        if(organisationUnit.equalsIgnoreCase("admin")){
             root = true;
             kw.loadKeyStore("root.jks",array);
             parent = (X509Certificate) kr.readCertificate("root.jks", "tim17", alias);
@@ -72,13 +75,15 @@ public class OcspService {
         PublicKey pk = parent.getPublicKey();
         byte[] dataToSign = certificate.getEncoded();
         byte[] signature = certificate.getSignature();
-        boolean signVerification = verify(dataToSign,signature,pk);
+        /*boolean signVerification = verify(dataToSign,signature,pk);
 
-        if(!signVerification)
+        if(!signVerification) {
             return false;
+        }*/
 
         if(!validity)
             return false;
+
 
         if(!validityDate)
             return false;
@@ -111,7 +116,7 @@ public class OcspService {
     }
 
     private boolean verify(byte[] data, byte[] signature, PublicKey publicKey) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
-        Signature sig = Signature.getInstance("SHA1withRSA");
+        Signature sig = Signature.getInstance("SHA256withRSA");
         sig.initVerify(publicKey);
         sig.update(data);
         return sig.verify(signature);

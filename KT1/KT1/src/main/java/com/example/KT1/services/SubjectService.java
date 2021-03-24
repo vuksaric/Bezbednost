@@ -77,15 +77,17 @@ public class SubjectService {
 
         document.open();
         Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-        Chunk chunk = new Chunk("Subject: " + subject2 + "\n", font);
-        Chunk chunk1 = new Chunk("Start date: " + startDate.toString() + "\n", font);
-        Chunk chunk2 = new Chunk("End date: " + endDate.toString() + "\n", font);
-        Chunk chunk3 = new Chunk("Issuer: " + issuer + "\n", font);
-        Chunk chunk4 = new Chunk("Email: " + email + "\n", font);
-        Chunk chunk5 = new Chunk("Organisation: " + organisation + "\n", font);
-        Chunk chunk6 = new Chunk("Organisation unit: " + organisationUnit + "\n", font);
-        Chunk chunk7 = new Chunk("Public key: " + publicKey + "\n", font);
+        Paragraph chunk = new Paragraph("Subject: " + subject2, font);
+        Paragraph chunk1 = new Paragraph("Start date: " + startDate.toString(), font);
+        Paragraph chunk2 = new Paragraph("End date: " + endDate.toString(), font);
+        Paragraph chunk3 = new Paragraph("Issuer: " + issuer, font);
+        Paragraph chunk4 = new Paragraph("Email: " + email, font);
+        Paragraph chunk5 = new Paragraph("Organisation: " + organisation , font);
+        Paragraph chunk6 = new Paragraph("Organisation unit: " + organisationUnit , font);
+        Paragraph chunk7 = new Paragraph("Public key: " + publicKey , font);
+        Paragraph chunk8 = new Paragraph("CERTIFICATE", font);
 
+        document.add(chunk8);
         document.add(chunk);
         document.add(chunk1);
         document.add(chunk2);
@@ -113,10 +115,12 @@ public class SubjectService {
         if(subject.isCA()){
             kw.loadKeyStore("interCertificate.jks",array);
             cert = kr.readCertificate("interCertificate.jks", "tim17", subject.getId().toString());
+            System.out.println(cert);
         }
         else{
             kw.loadKeyStore("endEntity.jks",array);
             cert = kr.readCertificate("endEntity.jks", "tim17", subject.getId().toString());
+            System.out.println(cert);
         }
 
         return getParents((X509Certificate) cert, certificateDTOList);
@@ -130,24 +134,32 @@ public class SubjectService {
 
         X500Name x500name = new JcaX509CertificateHolder(certificate).getIssuer();
         RDN uid = x500name.getRDNs(BCStyle.UID)[0];
+        RDN ou = x500name.getRDNs(BCStyle.OU)[0];
         String alias = IETFUtils.valueToString(uid.getFirst().getValue());
+        String organisationUnit = IETFUtils.valueToString(ou.getFirst().getValue());
         System.out.println(alias);
 
-        kw.loadKeyStore("interCertificate.jks",array);
         KeyStoreReader kr = new KeyStoreReader();
+        kw.loadKeyStore("interCertificate.jks",array);
         parent = (X509Certificate) kr.readCertificate("interCertificate.jks", "tim17", alias);
+
         certificateDTOList.add(new CertificateDTO(certificate));
+        System.out.println("SERTIFIKAT: " + certificate);
 
-
-        if(parent == null){
+        if(organisationUnit.equalsIgnoreCase("admin")){
             kw.loadKeyStore("root.jks",array);
             parent = (X509Certificate) kr.readCertificate("root.jks", "tim17", alias);
+            System.out.println("ROOT: " + parent);
             certificateDTOList.add(new CertificateDTO(parent));
+            System.out.println(certificateDTOList.size());
             return certificateDTOList;
         }
 
-        getParents(parent, certificateDTOList);
-        return null;
+        return getParents(parent, certificateDTOList);
+
     }
 
+    public void delete(Subject subject) {
+        subjectRepository.deleteById(subject.getId());
+    }
 }
