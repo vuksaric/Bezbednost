@@ -1,6 +1,6 @@
+import { logging } from 'protractor';
 import { UserService } from './../../services/user.service';
 import { CertificateService } from './../../services/certificate.service';
-import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,6 +15,12 @@ export class CreateCertificateComponent implements OnInit {
       public issuers = [] as any;
       public subjects = [] as any;
       public type: any = null;
+      public typeCert: any = null;
+      public nonRepudiationC = false;
+      public digitalSignatureC = false;
+      public keyEnciphermentC = false;
+      public keyAgreementC = false;
+      
       validateForm!: FormGroup;
 
       constructor(private router:Router,private fb: FormBuilder, private certificateService: CertificateService, private userService: UserService) {}
@@ -34,6 +40,12 @@ export class CreateCertificateComponent implements OnInit {
           })
         }
 
+        public checkType(): void {
+          console.log(this.type);
+          console.log("Usao sam u check");
+         
+        }
+
         
         public getAllIssuers(): void {
           this.userService.getAllIssuers().subscribe(data => {
@@ -43,33 +55,44 @@ export class CreateCertificateComponent implements OnInit {
         }
       
 
-        changeSelect(e, formLogin){
-          console.log(e.target.value);
-          console.log(formLogin)
-    
-        }
+      
 
         submitForm(): void {
+      
           for (const i in this.validateForm.controls) {
             this.validateForm.controls[i].markAsDirty();
             this.validateForm.controls[i].updateValueAndValidity();
           }
-          let type = this.type;
+          
+       
           let days = this.validateForm.value.days;
           let issuer = this.validateForm.value.issuer;
           let subject = this.validateForm.value.subject;
-          console.log(this.validateForm.value.type);
           
 
-          let body = {
-            digitalSignature: this.validateForm.value.digitalSignature,
-            keyEncipherment:  this.validateForm.value.keyEncipherment,
-            keyAgreement:  this.validateForm.value.keyAgreement,
-            nonRepudiation: this.validateForm.value.nonRepudiation
+          if(this.type === "1"){
+            this.typeCert = "root";
+           }else if(this.type === "2"){
+            this.typeCert = "interRoot";
+           }else if(this.type === "3"){
+            this.typeCert = "endEntity";
+            console.log(this.typeCert);
+            console.log("USAO SAM!!!!!");
+          }else if(this.type === "4"){
+            this.typeCert = "intermediate";
           }
-          this.certificateService.createCertificate(type, days, issuer, subject, body).subscribe(data => {
+         
+          let body = {
+            digitalSignature: this.digitalSignatureC,
+            keyEncipherment:  this.keyEnciphermentC,
+            keyAgreement:  this.keyAgreementC,
+            nonRepudiation: this.nonRepudiationC
+          }
+          console.log(body);
+          this.certificateService.createCertificate(this.typeCert, days, subject, issuer, body).subscribe(data => {
             console.log("uspeo");
           }, error => { 
+            console.log(this.typeCert);
           console.log("nije uspeo");
           })
       }

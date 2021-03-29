@@ -1,1 +1,22 @@
-<p>user-home-page works!</p>
+<nz-alert *ngIf="isValid" nzType="success" nzMessage="Success" nzShowIcon>Certificate is valid!</nz-alert>
+<nz-alert *ngIf="!notValid" nzType="error" nzMessage="Error" nzDescription="Certificate is not valid!" nzShowIcon> </nz-alert>
+<nz-list nzGrid>
+  <div nz-row [nzGutter]="16" >
+    <div nz-col [nzXXl]="8" [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="10"  *ngFor="let certificate of certificates">
+      <nz-list-item>
+        <nz-card class="vidi">
+          <div style="margin-bottom:2rem">
+              Subject:  {{ certificate.subject }} <br/>
+              Valid date:  {{ certificate.endDate}} <br/>
+              Email:  {{ certificate.email }} <br/>
+              Organisation:  {{ certificate.organisation}} <br/>
+              Organisation unit:  {{ certificate.organisationUnit}} <br/>
+          </div>
+          <a (click)="download(certificate.id)"><b>Download</b></a>
+          <a (click)="checkValidity(certificate.id)"><b>Check validity</b></a>
+          <!-- *ngIf="certificate.issuerOrganisationUnit=='admin'" -->
+        </nz-card>
+      </nz-list-item>
+    </div>
+  </div>
+</nz-list>

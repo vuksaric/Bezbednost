@@ -55,7 +55,7 @@ public class CertificateGenerator {
 
 
         PrivateKey pk = keyPair.getPrivate();
-        System.out.println("KLJUCEVI" + keyPair.getPublic().toString() + " " + keyPair.getPrivate().toString());
+        //System.out.println("KLJUCEVI" + keyPair.getPublic().toString() + " " + keyPair.getPrivate().toString());
         final ContentSigner contentSigner = new JcaContentSignerBuilder(hashAlgorithm).build(pk);
 
         Boolean isCa = subject.isCA();

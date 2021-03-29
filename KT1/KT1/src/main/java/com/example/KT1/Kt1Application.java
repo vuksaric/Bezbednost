@@ -16,7 +16,7 @@ public class Kt1Application {
 	public static void main(String[] args) throws KeyStoreException {
 		SpringApplication.run(Kt1Application.class, args);
 		//X509Certificate x509Certificate2 = certificateGenerator1.generateCertificate(subjectData1, issuerData);
-/*
+
 		KeyStoreWriter keyStore = new KeyStoreWriter();
 		KeyStoreWriter keyStore1 = new KeyStoreWriter();
 		KeyStoreWriter keyStore2 = new KeyStoreWriter();
@@ -31,7 +31,7 @@ public class Kt1Application {
 
 		keyStore1.saveKeyStore("interCertificate.jks", password);
 
-		keyStore2.saveKeyStore("endEntity.jks", password);*/
+		keyStore2.saveKeyStore("endEntity.jks", password);
 	}
 
 }

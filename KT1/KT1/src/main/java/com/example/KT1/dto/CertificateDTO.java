@@ -10,6 +10,7 @@ import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 
+import java.math.BigInteger;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class CertificateDTO {
 
     private String id;
     private String subject;
+    private BigInteger serialNumber;
     @JsonFormat(pattern = "dd/MM/yy")
     private Date startDate;
     @JsonFormat(pattern = "dd/MM/yy")
@@ -53,5 +55,6 @@ public class CertificateDTO {
         issuerOrganisationUnit = IETFUtils.valueToString(ouIssuer.getFirst().getValue());
         RDN uid = x500Name.getRDNs(BCStyle.UID)[0];
         id = IETFUtils.valueToString(uid.getFirst().getValue());
+        serialNumber = cert.getSerialNumber();
     }
 }

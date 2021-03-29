@@ -40,6 +40,7 @@ public class AdminService {
     }
 
     public void createCertificate(String type, String days, String subjectId, String issuerId, ExtensionDTO extensionDTO) throws OperatorCreationException, CertIOException, CertificateException {
+        System.out.println("TYPE: " + type);
         long idI = Long.parseLong(issuerId);
         long idS = Long.parseLong(subjectId);
         System.out.println(idI);
@@ -51,19 +52,24 @@ public class AdminService {
         if( type.equalsIgnoreCase("root")){
             issuer = findOne(idI);
             subject = new Subject(issuer);
-            System.out.println(issuer.getId());
-            System.out.println(subject.getId());
+            //System.out.println(issuer.getId());
+            //System.out.println(subject.getId());
+            System.out.println("USAO U ROOT, CA JE" + " " + subject.getName());
         }
         else if( type.equalsIgnoreCase("interRoot")){
             issuer = findOne(idI);
             subject = subjectService.findOne(idS);
             subject.setCA(true);
+            System.out.println("USAO U INTERROOT, CA JE" + " " + subject.getName());
         }
         else{
+            System.out.println("USAO U END");
             issuer2 = subjectService.findOne(idI);
             subject = subjectService.findOne(idS);
-            if (!type.equalsIgnoreCase("endEntity"))
+            if (!type.equalsIgnoreCase("endEntity")) {
+                System.out.println("USAO U INTER, CA JE");
                 subject.setCA(true);
+            }
         }
 
         subject.setCertificate(true);

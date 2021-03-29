@@ -10,7 +10,7 @@ const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'front-page'},
   {path: 'front-page', component:FrontPageComponent, children: [
     {path: 'admin-home-page', component: AdminHomePageComponent},
-    {path: 'user-home-page', component: UserHomePageComponent},
+    {path: 'user-home-page/:id', component: UserHomePageComponent},
     {path: 'list-certificates', component: ListCertificatesComponent },
     {path: 'create-certificate', component: CreateCertificateComponent}
   ]}

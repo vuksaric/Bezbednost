@@ -22,10 +22,14 @@ export class CertificateService {
   }
 
   public createCertificate(type, days, subjectId, issuerId, body): Observable<any> {
-    return this.http.post(`http://localhost:8092/admin/createCertificate/${type}/${days}/${subjectId}/${issuerId}`, body);
+    return this.http.post(`http://localhost:8092/admin/addCertificate/${type}/${days}/${subjectId}/${issuerId}`, body);
   }
 
   public revokeCert(body): Observable<any> {
     return this.http.post(`http://localhost:8092/ocsp/revoke`, body);
+  }
+
+  public checkValitidy(id): Observable<any> {
+    return this.http.get(`http://localhost:8092/ocsp/checkValidity/${id}`)
   }
 }

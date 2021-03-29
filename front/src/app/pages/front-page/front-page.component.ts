@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class FrontPageComponent implements OnInit {
 
+  id: any;
+
   constructor(private router: Router ) { }
 
   ngOnInit(): void {
@@ -20,15 +22,19 @@ export class FrontPageComponent implements OnInit {
   }
 
   user1HomePage():void{
+    console.log("kliknuo sam na tab za maju");
     localStorage.clear();
-    localStorage.setItem('userId', JSON.stringify(2));
-    this.router.navigate(['front-page/user-home-page']);
+    this.id = 1;
+    localStorage.setItem('userId', JSON.stringify(1));
+    this.router.navigate([`front-page/user-home-page/${this.id}`]);
   }
 
   user2HomePage():void{
+    console.log("kliknuo sam na tab za ninu");
     localStorage.clear();
-    localStorage.setItem('userId', JSON.stringify(3));
-    this.router.navigate(['front-page/user-home-page']);
+    this.id = 2;
+    localStorage.setItem('userId', JSON.stringify(2));
+    this.router.navigate([`front-page/user-home-page/${this.id}`]);
   }
 
 }

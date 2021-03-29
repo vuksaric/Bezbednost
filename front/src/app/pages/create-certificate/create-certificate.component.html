@@ -1,25 +1,27 @@
-<nz-select  nzShowSearch nzAllowClear [(ngModel)]="type">
+<label class="lbl">Check type:</label>
+<nz-select class="check" nzShowSearch nzAllowClear [(ngModel)]="type">
   <ng-container>
-    <nz-option nzLabel="root" nzValue="{{root}}"></nz-option>
-    <nz-option nzLabel="intermediate" nzValue="{{intermediate}}"></nz-option>
-    <nz-option nzLabel="endEntity" nzValue="{{endEntity}}"></nz-option>
+    <nz-option nzLabel="root" nzValue="{{1}}"></nz-option>
+    <nz-option nzLabel="interRoot" nzValue="{{2}}"></nz-option>
+    <nz-option nzLabel="endEntity" nzValue="{{3}}"></nz-option>
+    <nz-option nzLabel="intermediate" nzValue="{{4}}"></nz-option>
   </ng-container>
 </nz-select>
 <br><br>
+<label class="lbl1">Is digital signature:</label>
+<label nz-checkbox [(ngModel)]="digitalSignatureC"></label>
+<br><br>
+<label class="lbl1">Is key encipherment:</label>
+<label nz-checkbox [(ngModel)]="keyEnciphermentC"></label>
+<br><br>
+<label class="lbl1">Is key agreement:</label>
+<label nz-checkbox [(ngModel)]="keyAgreementC"></label>
+<br><br>
+<label class="lbl1">Is non repudiation:</label>
+<label nz-checkbox [(ngModel)]="nonRepudiationC"></label>
  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
     <br>  
-    <!--<nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="type2" nzRequired>
-            <span>Choose type of certificate</span>
-          </nz-form-label>
-          <nz-form-control >
-            <nz-radio-group>
-                <label nz-radio nzName="type" nzValue="root">root</label>
-                <label nz-radio nzName="type" nzValue="intermediate">intermediate</label>
-                <label nz-radio nzName="type" nzValue="endEntity">end entity</label>
-              </nz-radio-group>
-          </nz-form-control>
-      </nz-form-item> -->
+  
       <nz-form-item> 
           <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="days" nzRequired>
             <span>Days</span>
@@ -44,38 +46,6 @@
             <input nz-input id="issuer" formControlName="issuer" />
           </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="digitalSignature" >
-            <span>Is digital signature</span>
-          </nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24">
-            <label nz-checkbox></label>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="keyEncipherment" >
-              <span>Is key encipherment</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24">
-                <label nz-checkbox></label>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="keyAgreement" >
-              <span>Is key agreement</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" >
-                <label nz-checkbox></label>
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nonRepudiation" >
-              <span>Is nonrepudiation</span>
-            </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24">
-                <label nz-checkbox></label>
-            </nz-form-control>
-        </nz-form-item>
       <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
           <button nz-button nzType="primary" [disabled]="!validateForm.valid" nzGhost>Create certificate</button>
