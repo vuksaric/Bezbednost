@@ -1,5 +1,6 @@
 package com.example.KT1.model;
 
+import com.example.KT1.util.enums.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,8 @@ import javax.persistence.*;
 public class Subject {
 
     @Id
-    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String surname;
@@ -29,6 +30,14 @@ public class Subject {
     private String organisationUnit;
     private boolean isCA = false;
     private boolean certificate;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    private RequestStatus requestStatus;
+
 
 
     public Subject(Issuer issuer) {

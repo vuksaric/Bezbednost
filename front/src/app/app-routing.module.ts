@@ -1,3 +1,5 @@
+import { LoginComponent } from './pages/login/login.component';
+import { RegistrationComponent } from './pages/registration/registration.component';
 import { CreateCertificateComponent } from './pages/create-certificate/create-certificate.component';
 import { ListCertificatesComponent } from './pages/list-certificates/list-certificates.component';
 import { UserHomePageComponent } from './pages/user-home-page/user-home-page.component';
@@ -8,9 +10,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'front-page'},
-  {path: 'front-page', component:FrontPageComponent, children: [
+  {path: 'frontpage', component:FrontPageComponent, children: [
     {path: 'admin-home-page', component: AdminHomePageComponent},
     {path: 'user-home-page/:id', component: UserHomePageComponent},
+    {path: 'login', component: LoginComponent},
+    {path: 'login/:id', component: LoginComponent },
+    {path: 'register', component: RegistrationComponent},
     {path: 'list-certificates', component: ListCertificatesComponent },
     {path: 'create-certificate', component: CreateCertificateComponent}
   ]}

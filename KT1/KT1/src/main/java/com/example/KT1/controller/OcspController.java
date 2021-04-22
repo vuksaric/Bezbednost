@@ -1,20 +1,16 @@
 package com.example.KT1.controller;
 
-import com.example.KT1.dto.ExtensionDTO;
 import com.example.KT1.dto.IdDTO;
 import com.example.KT1.keyStore.KeyStoreReader;
 import com.example.KT1.keyStore.KeyStoreWriter;
 import com.example.KT1.model.Subject;
-import com.example.KT1.services.OcspService;
-import com.example.KT1.services.SubjectService;
-import org.bouncycastle.cert.ocsp.Req;
+import com.example.KT1.services.implementation.OcspService;
+import com.example.KT1.services.implementation.SubjectService;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;

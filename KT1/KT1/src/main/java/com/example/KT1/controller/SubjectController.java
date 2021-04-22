@@ -1,21 +1,13 @@
 package com.example.KT1.controller;
 
 import com.example.KT1.dto.CertificateDTO;
-import com.example.KT1.model.Issuer;
+import com.example.KT1.dto.request.GetIdRequest;
 import com.example.KT1.model.Subject;
-import com.example.KT1.services.OcspService;
-import com.example.KT1.services.SubjectService;
+import com.example.KT1.services.implementation.OcspService;
+import com.example.KT1.services.implementation.SubjectService;
 import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
 import java.security.InvalidKeyException;
@@ -57,6 +49,25 @@ public class SubjectController {
         long idSubject = Long.parseLong(id);
 
         return subjectService.getCertChain(idSubject);
+    }
+
+    //admin odobrava
+    @PutMapping("/approve")
+    //@PreAuthorize("hasAuthority('REGISTER')")
+    public void approveRegistrationRequest(@RequestBody GetIdRequest request){
+        subjectService.approveRegistrationRequest(request);
+    }
+
+    @PutMapping("/deny")
+    //@PreAuthorize("hasAuthority('REGISTER')")
+    public void denyRegistrationRequest(@RequestBody GetIdRequest request){
+        subjectService.denyRegistrationRequest(request);
+    }
+
+    //user potvrdjuje na mail-u
+    @PutMapping("/confirm")
+    public void confirmRegistrationRequest(@RequestBody GetIdRequest request){
+        subjectService.confirmRegistrationRequest(request);
     }
 
 

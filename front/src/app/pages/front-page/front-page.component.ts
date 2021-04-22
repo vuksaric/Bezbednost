@@ -15,26 +15,12 @@ export class FrontPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  adminHomePage():void{
-    localStorage.clear();
-    localStorage.setItem('userId', JSON.stringify(1));
-    this.router.navigate(['front-page/admin-home-page']);
+  loginForm():void{
+    this.router.navigate(['frontpage/login']);
   }
 
-  user1HomePage():void{
-    console.log("kliknuo sam na tab za maju");
-    localStorage.clear();
-    this.id = 1;
-    localStorage.setItem('userId', JSON.stringify(1));
-    this.router.navigate([`front-page/user-home-page/${this.id}`]);
-  }
-
-  user2HomePage():void{
-    console.log("kliknuo sam na tab za ninu");
-    localStorage.clear();
-    this.id = 2;
-    localStorage.setItem('userId', JSON.stringify(2));
-    this.router.navigate([`front-page/user-home-page/${this.id}`]);
+  registrationForm():void{
+    this.router.navigate(['frontpage/register']);
   }
 
 }

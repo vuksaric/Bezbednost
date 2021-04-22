@@ -1,4 +1,4 @@
-package com.example.KT1.services;
+package com.example.KT1.services.implementation;
 
 import com.example.KT1.certificate.CertificateGenerator;
 import com.example.KT1.dto.CertificateDTO;

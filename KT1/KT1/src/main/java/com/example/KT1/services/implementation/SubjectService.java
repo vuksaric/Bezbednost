@@ -1,11 +1,13 @@
-package com.example.KT1.services;
+package com.example.KT1.services.implementation;
 
-import com.example.KT1.certificate.CertificateGenerator;
 import com.example.KT1.dto.CertificateDTO;
+import com.example.KT1.dto.request.GetIdRequest;
 import com.example.KT1.keyStore.KeyStoreReader;
 import com.example.KT1.keyStore.KeyStoreWriter;
 import com.example.KT1.model.Subject;
 import com.example.KT1.repository.SubjectRepository;
+import com.example.KT1.services.IEmailService;
+import com.example.KT1.util.enums.RequestStatus;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.bouncycastle.asn1.x500.RDN;
@@ -14,7 +16,6 @@ import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -27,11 +28,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 @Service
 public class SubjectService {
 
+    private final IEmailService _emailService;
+
+
     @Autowired
     SubjectRepository subjectRepository;
+
+    public SubjectService(IEmailService emailService) {
+        _emailService = emailService;
+    }
 
 
     public Subject findOne(long idI) {
@@ -161,5 +170,26 @@ public class SubjectService {
 
     public void delete(Subject subject) {
         subjectRepository.deleteById(subject.getId());
+    }
+
+    public void approveRegistrationRequest(GetIdRequest request) {
+        Subject subject = subjectRepository.findOneById(request.getId());
+        subject.setRequestStatus(RequestStatus.APPROVED);
+        Subject savedSubject = subjectRepository.save(subject);
+
+        _emailService.approveRegistrationMail(savedSubject);
+    }
+
+    public void denyRegistrationRequest(GetIdRequest request) {
+        Subject subject = subjectRepository.findOneById(request.getId());
+        subject.setRequestStatus(RequestStatus.DENIED);
+        Subject savedSubject = subjectRepository.save(subject);
+        _emailService.denyRegistrationMail(savedSubject);
+    }
+
+    public void confirmRegistrationRequest(GetIdRequest request) {
+        Subject subject = subjectRepository.findOneById(request.getId());
+        subject.setRequestStatus(RequestStatus.CONFIRMED);
+        subjectRepository.save(subject);
     }
 }

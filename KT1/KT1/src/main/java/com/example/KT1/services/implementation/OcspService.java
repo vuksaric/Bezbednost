@@ -1,4 +1,4 @@
-package com.example.KT1.services;
+package com.example.KT1.services.implementation;
 
 import com.example.KT1.keyStore.KeyStoreReader;
 import com.example.KT1.keyStore.KeyStoreWriter;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 

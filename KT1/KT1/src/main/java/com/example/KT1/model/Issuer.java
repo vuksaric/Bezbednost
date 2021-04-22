@@ -17,14 +17,19 @@ import java.security.PrivateKey;
 public class Issuer {
 
     @Id
-    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String surname;
     private String email;
     private String organisation;
     private String organisationUnit;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
 
 
 
