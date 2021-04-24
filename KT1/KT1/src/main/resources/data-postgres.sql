@@ -1,11 +1,11 @@
 insert into permission (name) values
-('REGISTER'), ('LOGIN');
+('REGISTER'), ('LOGIN'), ('CONFIRM'), ('DENY'), ('APPROVE');
 
 insert into authority (name) values ('ROLE_ADMIN'), ('ROLE_USER');
 
 insert into authorities_permissions (authority_id, permission_id) values
-(1, 2),
-(2, 1), (2, 2);
+(1, 2), (1, 4), (1, 5),
+(2, 1), (2, 2), (2, 3);
 
 -- password-> Admin123!!!
 

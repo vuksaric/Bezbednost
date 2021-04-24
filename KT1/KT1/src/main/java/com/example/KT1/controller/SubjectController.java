@@ -1,6 +1,7 @@
 package com.example.KT1.controller;
 
 import com.example.KT1.dto.CertificateDTO;
+import com.example.KT1.dto.request.GetEmailRequest;
 import com.example.KT1.dto.request.GetIdRequest;
 import com.example.KT1.model.Subject;
 import com.example.KT1.services.implementation.OcspService;
@@ -66,7 +67,7 @@ public class SubjectController {
 
     //user potvrdjuje na mail-u
     @PutMapping("/confirm")
-    public void confirmRegistrationRequest(@RequestBody GetIdRequest request){
+    public void confirmRegistrationRequest(@RequestBody GetEmailRequest request){
         subjectService.confirmRegistrationRequest(request);
     }
 

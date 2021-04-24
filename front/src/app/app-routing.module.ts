@@ -9,12 +9,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: 'front-page'},
+  {path: '', pathMatch: 'full', redirectTo: 'frontpage'},
   {path: 'frontpage', component:FrontPageComponent, children: [
     {path: 'admin-home-page', component: AdminHomePageComponent},
     {path: 'user-home-page/:id', component: UserHomePageComponent},
     {path: 'login', component: LoginComponent},
-    {path: 'login/:id', component: LoginComponent },
+    {path: 'login/:email', component: LoginComponent },
     {path: 'register', component: RegistrationComponent},
     {path: 'list-certificates', component: ListCertificatesComponent },
     {path: 'create-certificate', component: CreateCertificateComponent}

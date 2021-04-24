@@ -1,6 +1,7 @@
 package com.example.KT1.services.implementation;
 
 import com.example.KT1.dto.CertificateDTO;
+import com.example.KT1.dto.request.GetEmailRequest;
 import com.example.KT1.dto.request.GetIdRequest;
 import com.example.KT1.keyStore.KeyStoreReader;
 import com.example.KT1.keyStore.KeyStoreWriter;
@@ -187,8 +188,9 @@ public class SubjectService {
         _emailService.denyRegistrationMail(savedSubject);
     }
 
-    public void confirmRegistrationRequest(GetIdRequest request) {
-        Subject subject = subjectRepository.findOneById(request.getId());
+    public void confirmRegistrationRequest(GetEmailRequest request) {
+        //Subject subject = subjectRepository.findOneById(request.getId());
+        Subject subject= subjectRepository.findOneByEmail(request.getEmail());
         subject.setRequestStatus(RequestStatus.CONFIRMED);
         subjectRepository.save(subject);
     }

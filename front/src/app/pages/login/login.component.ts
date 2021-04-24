@@ -47,11 +47,11 @@ export class LoginComponent implements OnInit {
       remember: [true]
     });
 
-    const id = this.route.snapshot.params.id;
-    console.log(id);
-    if(id != undefined){
+    const email = this.route.snapshot.params.email;
+    console.log(email);
+    if(email != undefined){
       const body = {
-        id: id
+        email: email
       }
       this.rrService.confirmRegistrationRequest(body).subscribe(() => {
         alert('Uspešno ste se registrovali!');

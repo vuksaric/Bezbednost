@@ -22,7 +22,7 @@ public class EmailService implements IEmailService {
         String title = "Your registration has been approved.";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", subject.getName(), subject.getSurname()));
-        context.setVariable("link", String.format("http://localhost:4200/frontpage/login/%s", subject.getId()));
+        context.setVariable("link", String.format("http://localhost:4200/frontpage/login/%s", subject.getEmail()));
         _emailContext.send(to, title, "approveRegistration", context);
     }
 
