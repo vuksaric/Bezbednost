@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
     Subject findOneById(Long id);
+
+    Subject findOneByEmail(String email);
 }
