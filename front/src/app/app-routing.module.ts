@@ -1,3 +1,5 @@
+import { RegistrationRequestsComponent } from './pages/registration-requests/registration-requests.component';
+import { HomepageComponent } from './pages/homepage/homepage.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
 import { CreateCertificateComponent } from './pages/create-certificate/create-certificate.component';
@@ -18,6 +20,9 @@ const routes: Routes = [
     {path: 'register', component: RegistrationComponent},
     {path: 'list-certificates', component: ListCertificatesComponent },
     {path: 'create-certificate', component: CreateCertificateComponent}
+  ]},
+  {path: 'homepage', component: HomepageComponent, children: [
+    {path: 'registration-requests', component: RegistrationRequestsComponent},
   ]}
 ];
 

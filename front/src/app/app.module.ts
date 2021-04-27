@@ -1,3 +1,5 @@
+import { RegistrationRequestsComponent } from './pages/registration-requests/registration-requests.component';
+import { HomepageComponent } from './pages/homepage/homepage.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DemoNgZorroAntdModule } from './ng-zorro-antd.module';
@@ -30,7 +32,9 @@ registerLocaleData(en);
     ListCertificatesComponent,
     CreateCertificateComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    HomepageComponent,
+    RegistrationRequestsComponent
   ],
   imports: [
     BrowserModule,

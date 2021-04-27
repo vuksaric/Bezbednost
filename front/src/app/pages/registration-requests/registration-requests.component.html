@@ -1,0 +1,44 @@
+<nz-alert
+nzType="success"
+nzMessage="Success Tips"
+*ngIf="approveAlert"
+nzDescription="Successfully approved!"
+nzShowIcon
+>
+</nz-alert>
+<nz-alert
+nzType="success"
+*ngIf="denyAlert"
+nzMessage="Success Tips"
+nzDescription="Successfully denied!"
+nzShowIcon
+>
+</nz-alert>
+<nz-alert nzType="warning" nzMessage="Warning"  *ngIf="empty" nzDescription="There is no more registration requests!" nzShowIcon> </nz-alert>
+
+<nz-table #basicTable [nzData]="pendingUsers">
+<thead>
+<tr>
+  <th>Email</th>
+  <th>First name</th>
+  <th>Last name</th>
+  <th>Organisation</th>
+  <th>Organisation unit</th>
+  <th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let pendingUser of pendingUsers">
+  <td>{{ pendingUser.email }}</td>
+  <td>{{ pendingUser.name }}</td>
+  <td>{{ pendingUser.surname }}</td>
+  <td>{{ pendingUser.organisation }}</td>
+  <td>{{ pendingUser.organisationUnit }}</td>
+  <td>
+    <a (click)="approve(pendingUser.id)">Approve</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="deny(pendingUser.id)">Deny</a>
+  </td>
+</tr>
+</tbody>
+</nz-table> 

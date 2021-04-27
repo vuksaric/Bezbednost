@@ -31,8 +31,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(body).subscribe(data => {
       const user = data;
       localStorage.setItem('user', JSON.stringify(user));
-      console.log(data);
-    
+      this.router.navigate(['homepage']);
     }, error => { 
       this.errorLogin = true;   
     })
@@ -54,11 +53,9 @@ export class LoginComponent implements OnInit {
         email: email
       }
       this.rrService.confirmRegistrationRequest(body).subscribe(() => {
-        alert('Uspešno ste se registrovali!');
         this.router.navigateByUrl(`frontpage/login`);
       },
       error => {
-        alert("Error login");
       });
     }
   }

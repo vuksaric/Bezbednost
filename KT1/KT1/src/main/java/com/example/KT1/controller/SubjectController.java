@@ -3,6 +3,7 @@ package com.example.KT1.controller;
 import com.example.KT1.dto.CertificateDTO;
 import com.example.KT1.dto.request.GetEmailRequest;
 import com.example.KT1.dto.request.GetIdRequest;
+import com.example.KT1.dto.response.SubjectResponse;
 import com.example.KT1.model.Subject;
 import com.example.KT1.services.implementation.OcspService;
 import com.example.KT1.services.implementation.SubjectService;
@@ -54,13 +55,13 @@ public class SubjectController {
 
     //admin odobrava
     @PutMapping("/approve")
-    //@PreAuthorize("hasAuthority('REGISTER')")
+    //@PreAuthorize("hasAuthority('APPROVE')")
     public void approveRegistrationRequest(@RequestBody GetIdRequest request){
         subjectService.approveRegistrationRequest(request);
     }
 
     @PutMapping("/deny")
-    //@PreAuthorize("hasAuthority('REGISTER')")
+    //@PreAuthorize("hasAuthority('DENY')")
     public void denyRegistrationRequest(@RequestBody GetIdRequest request){
         subjectService.denyRegistrationRequest(request);
     }
@@ -69,6 +70,12 @@ public class SubjectController {
     @PutMapping("/confirm")
     public void confirmRegistrationRequest(@RequestBody GetEmailRequest request){
         subjectService.confirmRegistrationRequest(request);
+    }
+
+    @GetMapping("/registration-requests")
+    //@PreAuthorize("hasAuthority('REGISTER')")
+    public List<SubjectResponse> getRegistrationRequests(){
+        return subjectService.getRegistrationRequests();
     }
 
 

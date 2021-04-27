@@ -3,6 +3,7 @@ package com.example.KT1.services.implementation;
 import com.example.KT1.dto.CertificateDTO;
 import com.example.KT1.dto.request.GetEmailRequest;
 import com.example.KT1.dto.request.GetIdRequest;
+import com.example.KT1.dto.response.SubjectResponse;
 import com.example.KT1.keyStore.KeyStoreReader;
 import com.example.KT1.keyStore.KeyStoreWriter;
 import com.example.KT1.model.Subject;
@@ -193,5 +194,27 @@ public class SubjectService {
         Subject subject= subjectRepository.findOneByEmail(request.getEmail());
         subject.setRequestStatus(RequestStatus.CONFIRMED);
         subjectRepository.save(subject);
+    }
+
+    public List<SubjectResponse> getRegistrationRequests() {
+        List<Subject> subjects = subjectRepository.findAllByRequestStatus(RequestStatus.PENDING);
+        List<SubjectResponse> subjectResponses = new ArrayList<>();
+        for (Subject subject: subjects) {
+            SubjectResponse subjectResponse = mapSubjectToSubjectResponse(subject);
+            subjectResponses.add(subjectResponse);
+        }
+        return subjectResponses;
+    }
+
+    private SubjectResponse mapSubjectToSubjectResponse(Subject subject) {
+        SubjectResponse subjectResponse = new SubjectResponse();
+        subjectResponse.setId(subject.getId());
+        subjectResponse.setEmail(subject.getEmail());
+        subjectResponse.setFirstName(subject.getName());
+        subjectResponse.setLastName(subject.getSurname());
+        subjectResponse.setOrganisation(subject.getOrganisation());
+        subjectResponse.setOrganisationUnit(subject.getOrganisationUnit());
+        subjectResponse.setUsername(subject.getUser().getUsername());
+        return subjectResponse;
     }
 }
