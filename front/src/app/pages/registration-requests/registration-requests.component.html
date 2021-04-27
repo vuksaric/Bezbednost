@@ -1,3 +1,4 @@
+
 <nz-alert
 nzType="success"
 nzMessage="Success Tips"
@@ -30,8 +31,8 @@ nzShowIcon
 <tbody>
 <tr *ngFor="let pendingUser of pendingUsers">
   <td>{{ pendingUser.email }}</td>
-  <td>{{ pendingUser.name }}</td>
-  <td>{{ pendingUser.surname }}</td>
+  <td>{{ pendingUser.firstName }}</td>
+  <td>{{ pendingUser.lastName }}</td>
   <td>{{ pendingUser.organisation }}</td>
   <td>{{ pendingUser.organisationUnit }}</td>
   <td>

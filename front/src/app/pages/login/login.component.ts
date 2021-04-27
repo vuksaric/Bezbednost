@@ -1,10 +1,10 @@
-import { logging } from 'protractor';
 import { RegistrationRequestService } from './../../services/registration-request.service';
 import { AuthService } from './../../services/auth.service';
-import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import jwt_decode from 'jwt-decode';
+
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  
+  token: any;
   errorLogin: boolean = false;
   validateForm!: FormGroup;
 
@@ -31,10 +31,21 @@ export class LoginComponent implements OnInit {
     this.authService.login(body).subscribe(data => {
       const user = data;
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', JSON.stringify(user.token));
+      console.log( this.getDecodedAccessToken(data.token));
       this.router.navigate(['homepage']);
     }, error => { 
       this.errorLogin = true;   
     })
+  }
+
+  getDecodedAccessToken(token: string): any {
+    try{
+        return jwt_decode(token);
+    }
+    catch(Error){
+        return null;
+    }
   }
 
   

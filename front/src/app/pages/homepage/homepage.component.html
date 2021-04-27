@@ -2,11 +2,14 @@
     <nz-header>
       <div class="logo"></div>
       <ul class="bar" nz-menu nzTheme="dark" nzMode="horizontal">
-        <li nz-menu-item (click)="registrationRequests()">Registration requests</li>
-        <li nz-menu-item (click)="logout()">Logout</li>
+        <li *ngIf="isAdmin" nz-menu-item (click)="registrationRequests()">Registration requests</li>
+        <li *ngIf="isAdmin" nz-menu-item (click)="create()">Create new certificate</li>
+        <li *ngIf="isAdmin" nz-menu-item (click)="allCert()">List of all certificates</li>
+        <li *ngIf="isUser" nz-menu-item (click)="certificates()">Certificates</li>
+        <li nz-menu-item (click)="clearStorage()">Logout</li>
       </ul>
     </nz-header>
     <nz-content>
      <router-outlet></router-outlet>
     </nz-content>
-  </nz-layout>
+</nz-layout>

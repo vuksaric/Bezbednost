@@ -17,12 +17,13 @@ const routes: Routes = [
     {path: 'user-home-page/:id', component: UserHomePageComponent},
     {path: 'login', component: LoginComponent},
     {path: 'login/:email', component: LoginComponent },
-    {path: 'register', component: RegistrationComponent},
-    {path: 'list-certificates', component: ListCertificatesComponent },
-    {path: 'create-certificate', component: CreateCertificateComponent}
+    {path: 'register', component: RegistrationComponent}
+  
   ]},
   {path: 'homepage', component: HomepageComponent, children: [
     {path: 'registration-requests', component: RegistrationRequestsComponent},
+    {path: 'list-certificates', component: ListCertificatesComponent },
+    {path: 'create-certificate', component: CreateCertificateComponent}
   ]}
 ];
 

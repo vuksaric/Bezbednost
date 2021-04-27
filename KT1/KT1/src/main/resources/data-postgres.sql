@@ -16,6 +16,13 @@ insert into user_entity (id, username, password, user_role) values
 (4, 'user3@gmail.com', '$2y$10$UFTyoDVYFFUqlb0lnKfoKe7H/EbQOqZH.ZYHf6sOYiOWSRCmpcJ5K', 1),
 (5, 'user4@gmail.com', '$2y$10$UFTyoDVYFFUqlb0lnKfoKe7H/EbQOqZH.ZYHf6sOYiOWSRCmpcJ5K', 1);
 
+insert into user_authority (user_id, authority_id) values
+(1, 1),
+(2, 2),
+(3, 2),
+(4, 2),
+(5, 2);
+
 
 insert into issuer(id, user_id, email,name,surname,organisation,organisation_unit)
 values(1,1, 'vuk.saric@gmail.com','Vuk','Saric','Tim 17','admin');
