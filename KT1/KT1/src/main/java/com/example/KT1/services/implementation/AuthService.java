@@ -1,5 +1,6 @@
 package com.example.KT1.services.implementation;
 
+import com.example.KT1.config.DataSource;
 import com.example.KT1.dto.request.LoginRequest;
 import com.example.KT1.dto.request.RegistrationRequest;
 import com.example.KT1.dto.response.UserResponse;
@@ -17,6 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -55,7 +60,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public UserResponse registerSubject(RegistrationRequest request) {
+    public UserResponse registerSubject(RegistrationRequest request){
         if(!request.getPassword().equals(request.getRePassword())){
             throw new GeneralException("Passwords do not match.", HttpStatus.BAD_REQUEST);
         }
@@ -75,14 +80,14 @@ public class AuthService implements IAuthService {
         subject.setRequestStatus(RequestStatus.PENDING);
         subject.setEmail(request.getUsername());
 
-
         Subject savedSubject = _subjectRepository.save(subject);
         savedSubject.setUser(user);
         user.setSubject(savedSubject);
         User savedUser = _userRepository.save(user);
 
-        return mapUserToUserResponse(savedUser);
+        return mapUserToUserResponse(user);
     }
+
 
     private UserResponse mapUserToUserResponse(User user) {
         UserResponse userResponse = new UserResponse();
