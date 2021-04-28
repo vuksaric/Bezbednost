@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Authority implements Serializable {
+public class Authority implements GrantedAuthority,Serializable {
 
     @Id
     @Column(name = "id")
@@ -36,4 +37,8 @@ public class Authority implements Serializable {
     private Set<Permission> permissions;
 
 
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 }

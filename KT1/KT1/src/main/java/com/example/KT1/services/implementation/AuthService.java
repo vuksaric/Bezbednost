@@ -51,7 +51,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public UserResponse login(LoginRequest request) {
-
+        System.out.println(request.getUsername() + " " + request.getPassword());
         User user = _userRepository.findOneByUsername(request.getUsername());
         if(user == null || !_passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);

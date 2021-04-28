@@ -1,3 +1,4 @@
+import { ViewAllCertificatesComponent } from './pages/view-all-certificates/view-all-certificates.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { RegistrationRequestsComponent } from './pages/registration-requests/registration-requests.component';
@@ -38,7 +39,8 @@ registerLocaleData(en);
     HomepageComponent,
     RegistrationRequestsComponent,
     ChangePasswordComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ViewAllCertificatesComponent
   ],
   imports: [
     BrowserModule,

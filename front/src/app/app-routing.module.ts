@@ -1,3 +1,4 @@
+import { ViewAllCertificatesComponent } from './pages/view-all-certificates/view-all-certificates.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { RegistrationRequestsComponent } from './pages/registration-requests/registration-requests.component';
@@ -9,7 +10,7 @@ import { ListCertificatesComponent } from './pages/list-certificates/list-certif
 import { UserHomePageComponent } from './pages/user-home-page/user-home-page.component';
 import { AdminHomePageComponent } from './pages/admin-home-page/admin-home-page.component';
 import { FrontPageComponent } from './pages/front-page/front-page.component';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
   
   ]},
   {path: 'homepage', component: HomepageComponent, children: [
+    {path: 'view-all-certificates', component: ViewAllCertificatesComponent},
     {path: 'registration-requests', component: RegistrationRequestsComponent},
     {path: 'list-certificates', component: ListCertificatesComponent },
     {path: 'create-certificate', component: CreateCertificateComponent},

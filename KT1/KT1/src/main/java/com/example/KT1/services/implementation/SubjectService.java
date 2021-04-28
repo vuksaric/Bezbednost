@@ -47,11 +47,12 @@ public class SubjectService {
     @Autowired
     SubjectRepository subjectRepository;
 
-    public SubjectService(IEmailService emailService, VerificationTokenService vtService, UserRepository userRepository, VerificationTokenRepository vtRepository) {
+    public SubjectService(IEmailService emailService, VerificationTokenService vtService, UserRepository userRepository, VerificationTokenRepository vtRepository, SubjectRepository subjectRepository) {
         _emailService = emailService;
         _vtService = vtService;
         _userRepository = userRepository;
         _vtRepository = vtRepository;
+        this.subjectRepository = subjectRepository;
     }
 
 
@@ -127,6 +128,7 @@ public class SubjectService {
 
 
     public List<CertificateDTO> getCertChain(long idSubject) throws CertificateEncodingException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+        System.out.println(idSubject);
         Subject subject = subjectRepository.findById(idSubject).orElseGet(null);
         List<CertificateDTO> certificateDTOList = new ArrayList<CertificateDTO>();
         KeyStoreWriter kw=new KeyStoreWriter();

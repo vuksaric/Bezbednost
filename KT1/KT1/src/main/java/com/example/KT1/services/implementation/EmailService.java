@@ -44,7 +44,7 @@ public class EmailService implements IEmailService {
 
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", subject.getName(), subject.getSurname()));
-        context.setVariable("link", String.format("http://localhost:4200/frontpage/login/%s", token.getToken()));
+        context.setVariable("link", String.format("https://localhost:4200/frontpage/login/%s", token.getToken()));
         _emailContext.send(to, title, "approveRegistration", context);
     }
 
@@ -79,7 +79,7 @@ public class EmailService implements IEmailService {
         String title = "Change your password";
         Context context = new Context();
         context.setVariable("name", String.format("%s %s", subject.getName(), subject.getSurname()));
-        context.setVariable("link", String.format("http://localhost:4200/frontpage/change-password/%s", passwordToken.getToken()));
+        context.setVariable("link", String.format("https://localhost:4200/frontpage/change-password/%s", passwordToken.getToken()));
         _emailContext.send(to, title, "forgotPassword", context);
     }
 }
