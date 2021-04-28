@@ -12,7 +12,6 @@ import java.util.Set;
 @Entity(name = "user_entity")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
@@ -20,6 +19,11 @@ public class User {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public User() {
+        super();
+        this.enabled=false;
+    }
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -40,6 +44,9 @@ public class User {
     private Subject subject;
 
     private UserRoles userRole;
+
+    @Column(name = "enabled")
+    private boolean enabled;
 
 
 }

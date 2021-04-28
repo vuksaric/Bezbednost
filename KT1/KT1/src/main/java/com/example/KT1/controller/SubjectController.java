@@ -56,7 +56,7 @@ public class SubjectController {
     //admin odobrava
     @PutMapping("/approve")
     //@PreAuthorize("hasAuthority('APPROVE')")
-    public void approveRegistrationRequest(@RequestBody GetIdRequest request){
+    public void approveRegistrationRequest(@RequestBody GetIdRequest request) throws NoSuchAlgorithmException {
         subjectService.approveRegistrationRequest(request);
     }
 
@@ -68,8 +68,8 @@ public class SubjectController {
 
     //user potvrdjuje na mail-u
     @PutMapping("/confirm")
-    public void confirmRegistrationRequest(@RequestBody GetEmailRequest request){
-        subjectService.confirmRegistrationRequest(request);
+    public boolean confirmRegistrationRequest(@RequestBody GetEmailRequest request){
+        return subjectService.confirmRegistrationRequest(request);
     }
 
     @GetMapping("/registration-requests")

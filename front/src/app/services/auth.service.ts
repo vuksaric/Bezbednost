@@ -13,6 +13,14 @@ export class AuthService {
     return this.http.put(`http://localhost:8092/auth/login`, body);
   }
 
+  public changePassword(body): Observable<any> {
+    return this.http.put(`http://localhost:8092/auth/change-password`, body);
+  }
+
+  public forgotPassword(body): Observable<any> {
+    return this.http.post(`http://localhost:8092/auth/forgot-password`, body);
+  }
+
   public registerSubject(body): Observable<any> {
     return this.http.post('http://localhost:8092/auth/register', body);
   }

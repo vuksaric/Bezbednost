@@ -1,3 +1,5 @@
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { RegistrationRequestsComponent } from './pages/registration-requests/registration-requests.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -17,13 +19,17 @@ const routes: Routes = [
     {path: 'user-home-page/:id', component: UserHomePageComponent},
     {path: 'login', component: LoginComponent},
     {path: 'login/:email', component: LoginComponent },
-    {path: 'register', component: RegistrationComponent}
+    {path: 'register', component: RegistrationComponent},
+    {path: 'change-password', component: ChangePasswordComponent},
+    {path: 'forgot-password', component: ForgotPasswordComponent},
+    {path: 'change-password/:token', component: ChangePasswordComponent}
   
   ]},
   {path: 'homepage', component: HomepageComponent, children: [
     {path: 'registration-requests', component: RegistrationRequestsComponent},
     {path: 'list-certificates', component: ListCertificatesComponent },
-    {path: 'create-certificate', component: CreateCertificateComponent}
+    {path: 'create-certificate', component: CreateCertificateComponent},
+    
   ]}
 ];
 

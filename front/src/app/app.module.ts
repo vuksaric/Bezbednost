@@ -1,3 +1,5 @@
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { RegistrationRequestsComponent } from './pages/registration-requests/registration-requests.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
@@ -34,7 +36,9 @@ registerLocaleData(en);
     LoginComponent,
     RegistrationComponent,
     HomepageComponent,
-    RegistrationRequestsComponent
+    RegistrationRequestsComponent,
+    ChangePasswordComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

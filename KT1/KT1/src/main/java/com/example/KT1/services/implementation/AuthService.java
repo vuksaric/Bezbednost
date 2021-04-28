@@ -1,16 +1,21 @@
 package com.example.KT1.services.implementation;
 
+import com.example.KT1.dto.request.ChangePasswordRequest;
+import com.example.KT1.dto.request.ForgotPasswordRequest;
 import com.example.KT1.dto.request.LoginRequest;
 import com.example.KT1.dto.request.RegistrationRequest;
 import com.example.KT1.dto.response.UserResponse;
 import com.example.KT1.model.Authority;
+import com.example.KT1.model.PasswordToken;
 import com.example.KT1.model.Subject;
 import com.example.KT1.model.User;
 import com.example.KT1.repository.AuthorityRepository;
+import com.example.KT1.repository.PasswordTokenRepository;
 import com.example.KT1.repository.SubjectRepository;
 import com.example.KT1.repository.UserRepository;
 import com.example.KT1.security.Token;
 import com.example.KT1.services.IAuthService;
+import com.example.KT1.services.IEmailService;
 import com.example.KT1.util.GeneralException;
 import com.example.KT1.util.enums.RequestStatus;
 import com.example.KT1.util.enums.UserRoles;
@@ -30,13 +35,17 @@ public class AuthService implements IAuthService {
     private final AuthorityRepository _authorityRepository;
     private final SubjectRepository _subjectRepository;
     private final Token token;
+    private final IEmailService _emailService;
+    private final PasswordTokenRepository _ptRepository;
 
-    public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository, AuthorityRepository authorityRepository, SubjectRepository subjectRepository, Token token) {
+    public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository, AuthorityRepository authorityRepository, SubjectRepository subjectRepository, Token token, IEmailService emailService, PasswordTokenRepository ptRepository) {
         _passwordEncoder = passwordEncoder;
         _userRepository = userRepository;
         _authorityRepository = authorityRepository;
         _subjectRepository = subjectRepository;
         this.token = token;
+        _emailService = emailService;
+        _ptRepository = ptRepository;
     }
 
 
@@ -94,10 +103,27 @@ public class AuthService implements IAuthService {
         user.setSubject(savedSubject);
         User savedUser = _userRepository.save(user);
 
-        return mapUserToUserResponse(user);
+        return mapUserToUserResponse(savedUser);
     }
 
+    @Override
+    public void forgotPassword(ForgotPasswordRequest request) {
+        _emailService.forgotPassword(request);
+    }
 
+    @Override
+    public void changePassword(ChangePasswordRequest request) {
+        if(!request.getPassword().equals(request.getRePassword())){
+            throw new GeneralException("Passwords do not match.", HttpStatus.BAD_REQUEST);
+        }
+        PasswordToken passwordToken = _ptRepository.findOneByToken(request.getEmail());
+        System.out.println(request.getEmail());
+        System.out.println(passwordToken.getEmail());
+        User user = _userRepository.findOneByUsername(passwordToken.getEmail());
+        user.setPassword(_passwordEncoder.encode(request.getPassword()));
+        _userRepository.save(user);
+        _ptRepository.delete(passwordToken);
+    }
 
 
     private UserResponse mapUserToUserResponse(User user) {

@@ -7,7 +7,11 @@ import com.example.KT1.dto.response.SubjectResponse;
 import com.example.KT1.keyStore.KeyStoreReader;
 import com.example.KT1.keyStore.KeyStoreWriter;
 import com.example.KT1.model.Subject;
+import com.example.KT1.model.User;
+import com.example.KT1.model.VerificationToken;
 import com.example.KT1.repository.SubjectRepository;
+import com.example.KT1.repository.UserRepository;
+import com.example.KT1.repository.VerificationTokenRepository;
 import com.example.KT1.services.IEmailService;
 import com.example.KT1.util.enums.RequestStatus;
 import com.itextpdf.text.*;
@@ -35,13 +39,19 @@ import java.util.List;
 public class SubjectService {
 
     private final IEmailService _emailService;
+    private final VerificationTokenService _vtService;
+    private final UserRepository _userRepository;
+    private final VerificationTokenRepository _vtRepository;
 
 
     @Autowired
     SubjectRepository subjectRepository;
 
-    public SubjectService(IEmailService emailService) {
+    public SubjectService(IEmailService emailService, VerificationTokenService vtService, UserRepository userRepository, VerificationTokenRepository vtRepository) {
         _emailService = emailService;
+        _vtService = vtService;
+        _userRepository = userRepository;
+        _vtRepository = vtRepository;
     }
 
 
@@ -174,11 +184,11 @@ public class SubjectService {
         subjectRepository.deleteById(subject.getId());
     }
 
-    public void approveRegistrationRequest(GetIdRequest request) {
+    public void approveRegistrationRequest(GetIdRequest request) throws NoSuchAlgorithmException {
         Subject subject = subjectRepository.findOneById(request.getId());
         subject.setRequestStatus(RequestStatus.APPROVED);
         Subject savedSubject = subjectRepository.save(subject);
-
+        _vtService.createToken(subject.getEmail());
         _emailService.approveRegistrationMail(savedSubject);
     }
 
@@ -189,11 +199,25 @@ public class SubjectService {
         _emailService.denyRegistrationMail(savedSubject);
     }
 
-    public void confirmRegistrationRequest(GetEmailRequest request) {
-        //Subject subject = subjectRepository.findOneById(request.getId());
-        Subject subject= subjectRepository.findOneByEmail(request.getEmail());
-        subject.setRequestStatus(RequestStatus.CONFIRMED);
-        subjectRepository.save(subject);
+    public boolean confirmRegistrationRequest(GetEmailRequest request) {
+        System.out.println(request.getEmail());
+        String email = _vtService.validationConfirmation(request.getEmail());
+        if(email == null){
+            return false;
+        }
+        Subject subject= subjectRepository.findOneByEmail(email);
+        VerificationToken verificationToken = _vtRepository.findOneByEmail(email);
+        Date now = new Date();
+        if(verificationToken.getExpiryDate().before(now)){
+            return false;
+        }else {
+            subject.setRequestStatus(RequestStatus.CONFIRMED);
+            User user = subject.getUser();
+            user.setEnabled(true);
+            _userRepository.save(user);
+            subjectRepository.save(subject);
+            return true;
+        }
     }
 
     public List<SubjectResponse> getRegistrationRequests() {
