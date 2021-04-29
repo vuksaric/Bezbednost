@@ -90,7 +90,7 @@ public class AuthService implements IAuthService {
         user.setUserRole(UserRoles.USER);
         List<Authority> authorities = new ArrayList<>();
         authorities.add(_authorityRepository.findOneByName("ROLE_CUSTOMER"));
-        user.setAuthorities(new HashSet<>(authorities));
+        user.setAuthorities(new ArrayList<>(authorities));
         subject.setName(request.getFirstName());
         subject.setSurname(request.getLastName());
         subject.setOrganisation(request.getOrganisation());
